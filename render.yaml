@@ -14,22 +14,4 @@ services:
       - key: JWT_SECRET
         sync: false
       - key: FRONTEND_URL
-        fromService:
-          type: static
-          name: mood-journal-client
-          property: url
-
-  # Frontend Service
-  - type: static
-    name: mood-journal-client
-    env: static
-    buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
-    envVars:
-      - key: VITE_API_URL
-        fromService:
-          type: web
-          name: mood-journal-server
-          property: url
-      - key: VITE_API_KEY
-        sync: false
+        sync: false # Set this after deploying the frontend
