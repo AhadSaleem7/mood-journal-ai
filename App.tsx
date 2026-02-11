@@ -5,6 +5,8 @@ import { JournalEntryData } from "./types";
 import { StarsBackground } from "./components/animate-ui/components/backgrounds/stars";
 import { BubbleBackground } from "./components/animate-ui/components/backgrounds/bubble";
 
+import { getApiUrl } from "@/lib/utils";
+
 export default function App() {
   const [entries, setEntries] = useState<JournalEntryData[]>([]);
   const [user, setUser] = useState<{ username: string; token: string } | null>(null);
@@ -24,7 +26,7 @@ export default function App() {
 
   const fetchEntries = async (token: string) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/entries`, {
+      const res = await fetch(`${getApiUrl()}/api/entries`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
@@ -61,7 +63,7 @@ export default function App() {
     setEntries((prev) => [optimisticEntry, ...prev]);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/entries`, {
+      const res = await fetch(`${getApiUrl()}/api/entries`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

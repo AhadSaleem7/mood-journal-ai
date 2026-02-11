@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StarsBackground } from '@/components/animate-ui/components/backgrounds/stars';
-import { cn } from '@/lib/utils';
+import { cn, getApiUrl } from '@/lib/utils';
 
 interface AuthProps {
     onLogin: (token: string, username: string) => void;
@@ -18,7 +18,7 @@ export default function Auth({ onLogin }: AuthProps) {
         setError('');
         setLoading(true);
 
-        const endpoint = isLogin ? `${import.meta.env.VITE_API_URL}/api/login` : `${import.meta.env.VITE_API_URL}/api/signup`;
+        const endpoint = isLogin ? `${getApiUrl()}/api/login` : `${getApiUrl()}/api/signup`;
 
         try {
             const response = await fetch(endpoint, {

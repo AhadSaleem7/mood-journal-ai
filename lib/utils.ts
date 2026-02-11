@@ -4,3 +4,8 @@ import { twMerge } from "tailwind-merge"
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+
+export function getApiUrl() {
+  const url = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  return url.replace(/\/$/, '');
+}
