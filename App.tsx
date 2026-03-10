@@ -4,6 +4,7 @@ import Auth from "./components/Auth";
 import { JournalEntryData } from "./types";
 import { StarsBackground } from "./components/animate-ui/components/backgrounds/stars";
 import { BubbleBackground } from "./components/animate-ui/components/backgrounds/bubble";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 import { getApiUrl } from "@/lib/utils";
 
@@ -89,7 +90,11 @@ export default function App() {
   };
 
   if (loading) {
-    return <div className="text-white text-center mt-20">Loading...</div>;
+    return <DotLottieReact
+      src="https://lottie.host/6da0ea18-991b-43ac-8e8d-10f227d2516e/bxYkzIYEze.lottie"
+      loop
+      autoplay 
+    />;
   }
 
   if (!user) {
