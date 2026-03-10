@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StarsBackground } from '@/components/animate-ui/components/backgrounds/stars';
 import { cn, getApiUrl } from '@/lib/utils';
+import { GoogleLogin } from '@react-oauth/google';
 
 interface AuthProps {
     onLogin: (token: string, username: string) => void;
@@ -34,6 +35,27 @@ export default function Auth({ onLogin }: AuthProps) {
             if (!response.ok) {
                 throw new Error(data.message || 'Something went wrong');
             }
+
+            onLogin(data.token, data.username);
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleGoogleSuccess = async (credentialResponse: any) => {
+        setError('');
+        setLoading(true);
+        try {
+            const response = await fetch(`${getApiUrl()}/api/google-login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ credential: credentialResponse.credential })
+            });
+
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || 'Google Auth Failed');
 
             onLogin(data.token, data.username);
         } catch (err: any) {
@@ -90,6 +112,22 @@ export default function Auth({ onLogin }: AuthProps) {
                         {loading ? 'Processing...' : (isLogin ? 'Login' : 'Sign Up')}
                     </button>
                 </form>
+
+                <div className="mt-4 flex items-center justify-between">
+                    <span className="w-1/5 border-b border-white/10 lg:w-1/4"></span>
+                    <span className="text-xs text-center text-gray-500 uppercase">Or continue with</span>
+                    <span className="w-1/5 border-b border-white/10 lg:w-1/4"></span>
+                </div>
+
+                <div className="flex justify-center mt-4">
+                    <GoogleLogin
+                        onSuccess={handleGoogleSuccess}
+                        onError={() => setError('Google Authentication Failed')}
+                        theme="filled_black"
+                        shape="pill"
+                        text="continue_with"
+                    />
+                </div>
 
                 <div className="text-center">
                     <button
